@@ -1,13 +1,22 @@
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import static java.time.temporal.ChronoUnit.*;
 
 public class Main {
-    static List<Event> eventList = new ArrayList<>();
+    static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+
+    static List<Event> events = new ArrayList<>(){{
+        add(new Event("Event1", LocalDateTime.parse("01-02-2020 11:33:17",dateTimeFormatter), LocalDateTime.parse("03-02-2020 11:33:17",dateTimeFormatter)));
+        add(new Event("Event2", LocalDateTime.parse("01-02-2020 11:33:17",dateTimeFormatter), LocalDateTime.parse("07-02-2020 11:33:17",dateTimeFormatter)));
+        add(new Event("Event3", LocalDateTime.parse("01-02-2020 11:33:17",dateTimeFormatter), LocalDateTime.parse("02-02-2020 11:33:17",dateTimeFormatter)));
+    }};
     static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         int choice;
         boolean exit = false;
@@ -40,8 +49,15 @@ public class Main {
     private static void listEventsStartAtGivenDay(String s) {
     }
 
-    private static void listOverNDays(int i) {
-        
+    private static void listOverNDays(int days) {
+        for (int i = 0; i < events.size(); i++) {
+             Event currentEvent = events.get(i);
+             LocalDateTime startDate = currentEvent.getStartTime();
+             LocalDateTime endDate = currentEvent.getEndTime();
+             if (DAYS.between(startDate, endDate) >= days) {
+                 System.out.println(currentEvent.getName());
+             }
+        }
     }
 
     private static void addAnEvent() {
@@ -57,8 +73,8 @@ public class Main {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH:mm:ss", Locale.ENGLISH);
         LocalDateTime localStartDate = LocalDateTime.parse(dateStart, dateTimeFormatter);
         LocalDateTime localEndDate = LocalDateTime.parse(dateEnd, dateTimeFormatter);
-        eventList.add(new Event(name, localStartDate, localEndDate));
-        for (Event event : eventList) {
+        events.add(new Event(name, localStartDate, localEndDate));
+        for (Event event : events) {
             System.out.println(event.getName());
         }
     }
