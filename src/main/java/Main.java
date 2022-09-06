@@ -1,4 +1,4 @@
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,10 +15,11 @@ public class Main {
         add(new Event("Event2", LocalDateTime.parse("01-02-2020 11:33:17",dateTimeFormatter), LocalDateTime.parse("07-02-2020 11:33:17",dateTimeFormatter)));
         add(new Event("Event3", LocalDateTime.parse("01-02-2020 11:33:17",dateTimeFormatter), LocalDateTime.parse("02-02-2020 11:33:17",dateTimeFormatter)));
     }};
+    static Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         int choice;
         boolean exit = false;
-        Scanner scanner = new Scanner(System.in);
         do {
             printMenu();
             choice = scanner.nextInt();
@@ -58,10 +59,24 @@ public class Main {
              }
         }
     }
-    
 
     private static void addAnEvent() {
-        
+        System.out.println("What is the name of the event?");
+        String name = scanner.next();
+
+        System.out.println("What is the date of the start");
+        String dateStart = scanner.next();
+
+        System.out.println("What is the date of the end");
+        String dateEnd = scanner.next();
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH:mm:ss", Locale.ENGLISH);
+        LocalDateTime localStartDate = LocalDateTime.parse(dateStart, dateTimeFormatter);
+        LocalDateTime localEndDate = LocalDateTime.parse(dateEnd, dateTimeFormatter);
+        events.add(new Event(name, localStartDate, localEndDate));
+        for (Event event : events) {
+            System.out.println(event.getName());
+        }
     }
 
     private static void printMenu() {
